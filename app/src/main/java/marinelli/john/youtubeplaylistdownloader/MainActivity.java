@@ -21,12 +21,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements YoutubeLinkRetrieverAsyncResponse {
     private long enqueue;
     private DownloadManager dm;
     private ArrayList<String> mUrls = new ArrayList<String>();
     ProgressDialog mProgressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
                                 .getColumnIndex(DownloadManager.COLUMN_STATUS);
                         if (DownloadManager.STATUS_SUCCESSFUL == c
                                 .getInt(columnIndex)) {
-/*
-                            ImageView view = (ImageView) findViewById(R.id.imageView1);
-                            String uriString = c
-                                    .getString(c
-                                            .getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                            view.setImageURI(Uri.parse(uriString));*/
                         }
                     }
                 }
@@ -76,10 +69,20 @@ public class MainActivity extends AppCompatActivity {
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
             String params = url.getQuery();
             String playlistId = params.split("list=")[1];
-            YoutubeLinkRetriever s = new YoutubeLinkRetriever(playlistId, MainActivity.this, mProgressDialog);
-            s.execute();
+            YoutubeLinkRetriever ylr = new YoutubeLinkRetriever(playlistId, MainActivity.this, mProgressDialog);
+            ylr.execute();
         } catch (MalformedURLException e) {
 
+        }
+    }
+
+    /*
+    * Receive ArrayList of video links.
+     */
+    @Override
+    public void processYoutubeLinkRetrievalFinish(ArrayList<String> links) {
+        for (String link : links) {
+            // addNewYoutubeListItem(link);
         }
     }
 

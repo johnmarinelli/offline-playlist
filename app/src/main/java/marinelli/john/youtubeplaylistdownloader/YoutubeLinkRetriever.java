@@ -3,13 +3,13 @@ package marinelli.john.youtubeplaylistdownloader;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -20,6 +20,7 @@ public class YoutubeLinkRetriever extends AsyncTask<Void, Void, Void> {
     String mUrl;
     ArrayList<String> mVideoLinks;
     ProgressDialog mProgressDialog;
+    YoutubeLinkRetrieverAsyncResponse mDelegate = null;
 
     public YoutubeLinkRetriever(String playlistId, Context c, ProgressDialog progressDialog) {
         super();
@@ -33,11 +34,12 @@ public class YoutubeLinkRetriever extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
             Document doc = Jsoup.connect(mUrl).get();
-            Log.d("html", doc.html());
+
             Elements videoLinks = doc.select("a.pl-video-title-link");
 
-            Log.d("html", Integer.toString(videoLinks.size()));
             // fill video links array
+            for (Element link : videoLinks)  mVideoLinks.add(link.attr("href"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,6 +60,7 @@ public class YoutubeLinkRetriever extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        mDelegate.processYoutubeLinkRetrievalFinish(mVideoLinks);
         mProgressDialog.dismiss();
     }
 
