@@ -15,17 +15,20 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements YoutubeLinkRetrieverAsyncResponse {
+public class MainActivity extends AppCompatActivity implements YoutubePlaylistSplitterAsyncResponse {
     private long enqueue;
     private DownloadManager dm;
     private ArrayList<String> mUrls = new ArrayList<String>();
-    ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
+    private MediaAdapter mMediaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,12 @@ public class MainActivity extends AppCompatActivity implements YoutubeLinkRetrie
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
             String params = url.getQuery();
             String playlistId = params.split("list=")[1];
-            YoutubeLinkRetriever ylr = new YoutubeLinkRetriever(playlistId, MainActivity.this, mProgressDialog);
+            YoutubePlaylistSplitter ylr = new YoutubePlaylistSplitter(playlistId, MainActivity.this, mProgressDialog);
+            ylr.mDelegate = this;
             ylr.execute();
+
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (MalformedURLException e) {
 
         }
@@ -80,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements YoutubeLinkRetrie
     * Receive ArrayList of video links.
      */
     @Override
-    public void processYoutubeLinkRetrievalFinish(ArrayList<String> links) {
-        for (String link : links) {
-            // addNewYoutubeListItem(link);
-        }
+    public void processYoutubePlaylistSplitFinish(ArrayList<MediaModel> videos) {
+        // Set listview adapter.
+        ListView mediaList = (ListView) findViewById(R.id.video_list);
+        mediaList.setAdapter(new MediaAdapter(this, R.layout.video_list_item, videos));
     }
 
     public void onClick(View view) {

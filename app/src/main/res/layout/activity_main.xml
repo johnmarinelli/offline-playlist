@@ -2,14 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical" android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-
-    <Button android:text="Start Download" android:id="@+id/button1"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:onClick="onClick"></Button>
-    <Button android:text="View Downloads" android:id="@+id/button2"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:onClick="showDownload"></Button>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +16,9 @@
         android:id="@+id/fetch_links_button"
         android:onClick="fetchLinks"/>
 
-    <ImageView android:layout_height="wrap_content" android:id="@+id/imageView1"
-               android:layout_width="wrap_content"></ImageView>
+    <ListView
+        android:id="@+id/video_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 </LinearLayout>
