@@ -6,29 +6,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.DownloadManager;
-import android.app.DownloadManager.Query;
-import android.app.DownloadManager.Request;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.net.Uri;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements YoutubePlaylistSplitterAsyncResponse {
-    private long enqueue;
-    private DownloadManager dm;
-    private ArrayList<String> mUrls = new ArrayList<String>();
+import marinelli.john.lib.KeyboardUtilities;
+import marinelli.john.youtubeplaylistdownloader.scour.MediaHtmlPageAsyncResponse;
+import marinelli.john.youtubeplaylistdownloader.scour.YoutubePlaylistSplitter;
+
+public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyncResponse {
+    private long mEnqueue;
+    private DownloadManager mDownloadManager;
     private ProgressDialog mProgressDialog;
-    private MediaAdapter mMediaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements YoutubePlaylistSp
         setContentView(R.layout.activity_main);
 
         mProgressDialog = new ProgressDialog(this);
-
+        mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+/*
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements YoutubePlaylistSp
                             DownloadManager.EXTRA_DOWNLOAD_ID, 0);
                     Query query = new Query();
                     query.setFilterById(enqueue);
-                    Cursor c = dm.query(query);
+                    Cursor c = mDownloadManager.query(query);
                     if (c.moveToFirst()) {
                         int columnIndex = c
                                 .getColumnIndex(DownloadManager.COLUMN_STATUS);
@@ -59,14 +55,13 @@ public class MainActivity extends AppCompatActivity implements YoutubePlaylistSp
         };
 
         registerReceiver(receiver, new IntentFilter(
-                DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-
+                DownloadManager.ACTION_DOWNLOAD_COMPLETE));*/
     }
 
     /*
     * Scrape the page for video links.
      */
-    public void fetchLinks(View view) {
+    public void handleInputUrl(View view) {
         // Get HTML
         try {
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
@@ -76,10 +71,13 @@ public class MainActivity extends AppCompatActivity implements YoutubePlaylistSp
             ylr.mDelegate = this;
             ylr.execute();
 
-            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        } catch (MalformedURLException e) {
-
+            // Hide the keyboard
+            KeyboardUtilities.hideKeyboard(this);
+        } catch (NullPointerException|MalformedURLException e) {
+            Toast.makeText(this,
+                    e.getMessage() + "\nPlease make sure your URL is correct.",
+                    Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -90,16 +88,9 @@ public class MainActivity extends AppCompatActivity implements YoutubePlaylistSp
     public void processYoutubePlaylistSplitFinish(ArrayList<MediaModel> videos) {
         // Set listview adapter.
         ListView mediaList = (ListView) findViewById(R.id.video_list);
-        mediaList.setAdapter(new MediaAdapter(this, R.layout.video_list_item, videos));
+        MediaAdapter mediaAdapter = new MediaAdapter(this, R.layout.video_list_item, videos, mDownloadManager, mEnqueue);
+        mediaList.setAdapter(mediaAdapter);
     }
-
-    public void onClick(View view) {
-        dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        Request request = new Request(
-                Uri.parse("http://youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v=i62Zjga8JOM"));
-        enqueue = dm.enqueue(request);
-    }
-
 
     public void showDownload(View view) {
         Intent i = new Intent();

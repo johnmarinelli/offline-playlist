@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/fetch_links_button"
-        android:onClick="fetchLinks"/>
+        android:onClick="handleInputUrl"/>
 
     <ListView
         android:id="@+id/video_list"
