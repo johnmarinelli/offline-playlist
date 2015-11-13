@@ -3,7 +3,6 @@ package marinelli.john.youtubeplaylistdownloader.scour;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -19,17 +18,14 @@ import marinelli.john.youtubeplaylistdownloader.MediaModel;
  * Given a playlist URL, extracts links
  */
 public class YoutubePlaylistSplitter extends MediaHtmlPageScourer {
-    public YoutubePlaylistSplitter(String playlistId, Context c, ProgressDialog progressDialog) {
-        super();
+    public YoutubePlaylistSplitter(String playlistId, Context context, ProgressDialog progressDialog) {
+        super(context, progressDialog);
 
         // Create the URL we use to parse the html from youtube
         mUrl = Uri.parse(ApiLinks.CO_YOUTUBE_PLAYLIST_HTML_LINK.toString())
                 .buildUpon()
                 .appendQueryParameter("list", playlistId)
                 .build();
-
-        mContext = c;
-        mProgressDialog = progressDialog;
     }
 
     @Override
@@ -72,38 +68,4 @@ public class YoutubePlaylistSplitter extends MediaHtmlPageScourer {
         return null;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        // Show a progress dialog telling user what we're doing
-        mProgressDialog.setTitle("Playlist Splitter");
-        mProgressDialog.setMessage("Splitting playlist into videos...");
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.show();
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        if (mException == null) {
-            mDelegate.processYoutubePlaylistSplitFinish(mVideos);
-        }
-        else {
-            Toast.makeText(mContext, mException.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        mProgressDialog.dismiss();
-    }
-
-    @Override
-    protected void onCancelled(Void aVoid) {
-        super.onCancelled(aVoid);
-        onCancelled();
-    }
-
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
-        mProgressDialog.dismiss();
-    }
 }

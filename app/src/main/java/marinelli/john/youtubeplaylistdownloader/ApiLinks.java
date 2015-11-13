@@ -13,6 +13,24 @@ public class ApiLinks {
                 .path("playlist")
                 .build();
 
+    public static Uri YOUTUBE_VIDEO_LINK =
+            new Uri.Builder()
+                    .scheme("http")
+                    .authority("youtube.com")
+                    .path("watch")
+                    .build();
+
+    public static Uri CO_HTML_LINK =
+            new Uri.Builder()
+                .scheme("http")
+                .authority("crossorigin.me")
+                .build();
+
+    public static Uri CO_YOUTUBE_VIDEO_HTML_LINK = Uri.parse(Uri.decode(CO_HTML_LINK.toString()))
+                .buildUpon()
+                .path(Uri.decode(YOUTUBE_VIDEO_LINK.toString()))
+                .build();
+
     // Remember to use Uri::appendQueryParameter('list' || 'watch', playlist || video Id)
     public static Uri CO_YOUTUBE_PLAYLIST_HTML_LINK =
             new Uri.Builder()

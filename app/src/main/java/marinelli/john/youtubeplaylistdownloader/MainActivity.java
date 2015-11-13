@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 import marinelli.john.lib.KeyboardUtilities;
 import marinelli.john.youtubeplaylistdownloader.scour.MediaHtmlPageAsyncResponse;
+import marinelli.john.youtubeplaylistdownloader.scour.MediaHtmlPageScourer;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubePlaylistSplitter;
+import marinelli.john.youtubeplaylistdownloader.scour.YoutubeVideoScourer;
 
 public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyncResponse {
     private long mEnqueue;
@@ -65,11 +67,27 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
         // Get HTML
         try {
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
-            String params = url.getQuery();
-            String playlistId = params.split("list=")[1];
-            YoutubePlaylistSplitter ylr = new YoutubePlaylistSplitter(playlistId, MainActivity.this, mProgressDialog);
-            ylr.mDelegate = this;
-            ylr.execute();
+            UrlHandler.UrlType urlType = UrlHandler.getUrlType(url);
+            String mediaId = UrlHandler.getMediaId(urlType, url);
+
+            MediaHtmlPageScourer page = null;
+
+            switch (urlType) {
+                case YOUTUBE_VIDEO:
+                    page = new YoutubeVideoScourer(mediaId,
+                            MainActivity.this,
+                            mProgressDialog);
+                    break;
+
+                case YOUTUBE_PLAYLIST:
+                    page = new YoutubePlaylistSplitter(mediaId,
+                            MainActivity.this,
+                            mProgressDialog);
+                    break;
+            }
+
+            page.mDelegate = this;
+            page.execute();
 
             // Hide the keyboard
             KeyboardUtilities.hideKeyboard(this);
@@ -85,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
     * Receive ArrayList of video links.
      */
     @Override
-    public void processYoutubePlaylistSplitFinish(ArrayList<MediaModel> videos) {
+    public void processInputUrlFinish(ArrayList<MediaModel> videos) {
         // Set listview adapter.
         ListView mediaList = (ListView) findViewById(R.id.video_list);
         MediaAdapter mediaAdapter = new MediaAdapter(this, R.layout.video_list_item, videos, mDownloadManager, mEnqueue);
