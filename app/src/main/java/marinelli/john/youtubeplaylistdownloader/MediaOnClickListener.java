@@ -29,5 +29,6 @@ public class MediaOnClickListener implements View.OnClickListener {
 
         DownloadManager.Request request = new DownloadManager.Request(link);
         mEnqueue = mDownloadManager.enqueue(request);
+        MediaDownloadManager.addId(mEnqueue);
     }
 }

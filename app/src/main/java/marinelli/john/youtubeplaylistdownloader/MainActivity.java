@@ -1,8 +1,13 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.DownloadManager;
@@ -25,6 +30,7 @@ import marinelli.john.youtubeplaylistdownloader.scour.YoutubeVideoScourer;
 public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyncResponse {
     private long mEnqueue;
     private DownloadManager mDownloadManager;
+    private MediaDownloadManager mMediaDownloadManager;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -34,30 +40,10 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
 
         mProgressDialog = new ProgressDialog(this);
         mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-/*
-        BroadcastReceiver receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                    long downloadId = intent.getLongExtra(
-                            DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                    Query query = new Query();
-                    query.setFilterById(enqueue);
-                    Cursor c = mDownloadManager.query(query);
-                    if (c.moveToFirst()) {
-                        int columnIndex = c
-                                .getColumnIndex(DownloadManager.COLUMN_STATUS);
-                        if (DownloadManager.STATUS_SUCCESSFUL == c
-                                .getInt(columnIndex)) {
-                        }
-                    }
-                }
-            }
-        };
+        mMediaDownloadManager = new MediaDownloadManager(mDownloadManager);
 
-        registerReceiver(receiver, new IntentFilter(
-                DownloadManager.ACTION_DOWNLOAD_COMPLETE));*/
+        getApplicationContext().registerReceiver(new MediaReceiver(), new IntentFilter(
+                DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     /*

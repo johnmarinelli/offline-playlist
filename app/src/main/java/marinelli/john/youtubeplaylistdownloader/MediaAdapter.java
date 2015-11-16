@@ -1,6 +1,7 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
