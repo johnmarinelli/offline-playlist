@@ -2,10 +2,13 @@ package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import marinelli.john.lib.MediaScannerWrapper;
 
 /**
  * Receiver for when a file is done downloading.
@@ -60,7 +65,6 @@ public class MediaReceiver extends BroadcastReceiver {
                             + "/"
                             + inputFilename
                             + "/";
-
                     try {
                         FileInputStream in = new FileInputStream(inputPath);
                         FileOutputStream out = new FileOutputStream(outputPath);
@@ -78,13 +82,14 @@ public class MediaReceiver extends BroadcastReceiver {
                         out.flush();
                         out.close();
                         out = null;
-
+                        MediaDownloadManager.getModel(downloadId).setExternalStoragePath(outputPath);
 
                         try {
                             AudioFile mp3 = AudioFileIO.read(new File(outputPath));
+                            MediaModel model = MediaDownloadManager.getModel(downloadId);
                             Tag tag = mp3.getTag();
-                            tag.setField(FieldKey.ARTIST, "Lil Wayne");
-                            tag.setField(FieldKey.TITLE, "6 Foot 7 Foot");
+                            tag.setField(FieldKey.ARTIST, model.mArtist);
+                            tag.setField(FieldKey.TITLE, model.mTitle);
                             mp3.commit();
                         } catch (CannotReadException e) {
                             e.printStackTrace();
@@ -99,16 +104,18 @@ public class MediaReceiver extends BroadcastReceiver {
                         } catch (CannotWriteException e) {
                             e.printStackTrace();
                         }
-
+                        new MediaScannerWrapper(context, outputPath, "audio/mpeg3").scan();
 
                     } catch (java.io.FileNotFoundException e) {
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
                     } catch (java.io.IOException e) {
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
                     }
+
                 }
             }
 
+            MediaDownloadManager.removeModel(downloadId);
             c.close();
         }
     }

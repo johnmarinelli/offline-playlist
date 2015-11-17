@@ -19,8 +19,7 @@ public class MediaAdapter extends ArrayAdapter<MediaModel> {
     private ArrayList<MediaModel> mMedia;
     private DownloadManager mDownloadManager;
     private long mEnqueue;
-
-    Context mContext;
+    private Context mContext;
 
     public MediaAdapter(Context context, int textViewResourceId, ArrayList<MediaModel> media,
                         DownloadManager dm, long enqueue) {
@@ -48,7 +47,7 @@ public class MediaAdapter extends ArrayAdapter<MediaModel> {
             firstLine.setText(media.mTitle);
             secondLine.setText(media.mArtist);
 
-            download.setOnClickListener(new MediaOnClickListener(media, mDownloadManager, mEnqueue));
+            download.setOnClickListener(new MediaOnClickListener(mContext, media, mDownloadManager, mEnqueue));
         }
         return v;
     }

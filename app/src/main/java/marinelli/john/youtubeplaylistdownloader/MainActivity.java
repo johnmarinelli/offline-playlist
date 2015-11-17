@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.DownloadManager;
@@ -94,12 +93,6 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
         ListView mediaList = (ListView) findViewById(R.id.video_list);
         MediaAdapter mediaAdapter = new MediaAdapter(this, R.layout.video_list_item, videos, mDownloadManager, mEnqueue);
         mediaList.setAdapter(mediaAdapter);
-    }
-
-    public void showDownload(View view) {
-        Intent i = new Intent();
-        i.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
-        startActivity(i);
     }
 
     @Override

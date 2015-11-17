@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/artist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Artist"
+        android:padding="10dp" />
+
+
+    <Button
+        android:id="@+id/submit_media_data"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:text="Yes"
+        android:textColor="#5DBCD2"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:text="No"
+        android:textColor="#5DBCD2"
+        android:textStyle="bold" />
+
+</LinearLayout>
