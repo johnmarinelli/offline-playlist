@@ -1,16 +1,12 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.DownloadManager;
-import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,7 +23,6 @@ import marinelli.john.youtubeplaylistdownloader.scour.YoutubePlaylistSplitter;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubeVideoScourer;
 
 public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyncResponse {
-    private long mEnqueue;
     private DownloadManager mDownloadManager;
     private MediaDownloadManager mMediaDownloadManager;
     private ProgressDialog mProgressDialog;
@@ -41,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
         mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         mMediaDownloadManager = new MediaDownloadManager(mDownloadManager);
 
+        // Whenever a download is completed, create a new MediaReceiver().
         getApplicationContext().registerReceiver(new MediaReceiver(), new IntentFilter(
                 DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
@@ -57,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
 
             MediaHtmlPageScourer page = null;
 
+            // We need to use different scouring techniques for each kind of url
             switch (urlType) {
                 case YOUTUBE_VIDEO:
                     page = new YoutubeVideoScourer(mediaId,
@@ -71,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
                     break;
             }
 
+            // Once we're done handling page, this class will call the delegated function
             page.mDelegate = this;
             page.execute();
 
@@ -85,13 +83,17 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
     }
 
     /*
-    * Receive ArrayList of video links.
+    * Receive ArrayList of links.
      */
     @Override
     public void processInputUrlFinish(ArrayList<MediaModel> videos) {
         // Set listview adapter.
         ListView mediaList = (ListView) findViewById(R.id.video_list);
-        MediaAdapter mediaAdapter = new MediaAdapter(this, R.layout.video_list_item, videos, mDownloadManager, mEnqueue);
+        MediaAdapter mediaAdapter = new MediaAdapter(MainActivity.this,
+                R.layout.video_list_item,
+                videos,
+                mDownloadManager);
+
         mediaList.setAdapter(mediaAdapter);
     }
 

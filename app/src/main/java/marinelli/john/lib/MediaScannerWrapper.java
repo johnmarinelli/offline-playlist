@@ -21,7 +21,7 @@ public class MediaScannerWrapper implements
     }
 
     // do the scanning
-    public void scan() {
+    private void scan() {
         mConnection.connect();
     }
 
@@ -33,5 +33,9 @@ public class MediaScannerWrapper implements
 
     public void onScanCompleted(String path, Uri uri) {
         // when scan is completes, update media file tags
+    }
+
+    public static void scan(Context context, String path, String mime) {
+        new MediaScannerWrapper(context, path, mime).scan();
     }
 }

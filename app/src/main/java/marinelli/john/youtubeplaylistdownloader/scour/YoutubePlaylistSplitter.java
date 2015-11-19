@@ -58,6 +58,7 @@ public class YoutubePlaylistSplitter extends MediaHtmlPageScourer {
                         .first()
                         .text();
 
+                // Default youtube media model will set title as video title, artist as video owner
                 mVideos.add(new MediaModel(title, videoOwner, videoId));
             }
         } catch (IOException e) {

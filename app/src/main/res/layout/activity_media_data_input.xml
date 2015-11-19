@@ -20,26 +20,15 @@
         android:hint="Artist"
         android:padding="10dp" />
 
-
     <Button
         android:id="@+id/submit_media_data"
         android:layout_width="100dp"
         android:layout_height="30dp"
         android:background="@android:color/white"
         android:clickable="true"
-        android:text="Yes"
+        android:text="Done"
         android:textColor="#5DBCD2"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="5dp"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:text="No"
-        android:textColor="#5DBCD2"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="submitMediaData"/>
 
 </LinearLayout>

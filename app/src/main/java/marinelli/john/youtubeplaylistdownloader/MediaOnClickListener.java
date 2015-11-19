@@ -11,16 +11,11 @@ import android.view.View;
 public class MediaOnClickListener implements View.OnClickListener {
     private MediaModel mMedia;
     private DownloadManager mDownloadManager;
-    private MediaDataInputDialogFactory mDialogFactory;
-    private long mEnqueue;
-    private Context mContext;
 
-    public MediaOnClickListener(Context context, MediaModel media, DownloadManager dm, long enqueue) {
+    public MediaOnClickListener(MediaModel media, DownloadManager dm) {
         super();
-        mContext = context;
         mMedia = media;
         mDownloadManager = dm;
-        mEnqueue = enqueue;
     }
 
     @Override
@@ -31,10 +26,11 @@ public class MediaOnClickListener implements View.OnClickListener {
                 .appendQueryParameter("f", mMedia.mMediaId)
                 .build();
 
+        // Start the download request
         DownloadManager.Request request = new DownloadManager.Request(link);
+        long downloadId = mDownloadManager.enqueue(request);
 
-        mEnqueue = mDownloadManager.enqueue(request);
-        MediaDownloadManager.addId(mEnqueue);
-        MediaDownloadManager.addModel(mEnqueue, mMedia);
+        // Store this download id with a media model.
+        MediaDownloadManager.addModel(downloadId, mMedia);
     }
 }

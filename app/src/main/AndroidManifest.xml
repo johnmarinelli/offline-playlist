@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MediaDataInputActivity"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            android:label="Enter media data" >
+        </activity>
     </application>
 
 </manifest>

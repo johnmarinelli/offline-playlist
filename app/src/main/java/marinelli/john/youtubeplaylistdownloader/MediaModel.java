@@ -16,4 +16,8 @@ public class MediaModel {
     public void setExternalStoragePath(String path) {
         mExternalStoragePath = path;
     }
+
+    public String getExternalStoragePath() {
+        return mExternalStoragePath;
+    }
 }
