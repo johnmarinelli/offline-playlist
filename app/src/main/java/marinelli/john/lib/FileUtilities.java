@@ -18,10 +18,6 @@ public class FileUtilities {
             throws FileMoveException {
         boolean success = false;
 
-        if (!(new File(outputPath).canWrite())) {
-            throw new FileMoveException("External storage is unwritable.");
-        }
-
         try {
             FileInputStream in = new FileInputStream(inputPath);
             FileOutputStream out = new FileOutputStream(outputPath);

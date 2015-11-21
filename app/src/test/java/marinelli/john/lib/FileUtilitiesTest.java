@@ -42,25 +42,21 @@ public class FileUtilitiesTest {
         FileUtilities.moveFile(mFile.getAbsolutePath(), file2.getAbsolutePath());
 
         FileInputStream stream = new FileInputStream(file2);
-        byte[] buf = new byte[1024];
-        int read = 0;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        while ((read = stream.read(buf)) != 1) {
-            out.write(buf, 0, read);
-        }
+        byte[] buf = new byte[32];
 
-        String content = new String(out.toByteArray());
+        stream.read(buf);
+        String out = new String(buf);
 
-        assertEquals("MoveFile moves files.", "horses", content);
+        assertEquals("MoveFile moves files.", "123,456,789,101,121,314", out);
     }
 
     @Test
     public void testCreateDir() throws Exception {
-
-    }
-
-    @Test
-    public void testCreateDir1() throws Exception {
-
+        File tmp = mFolder.newFolder();
+        boolean dirCreated = FileUtilities.createDir(tmp.getAbsolutePath() + "/test");
+        File dir = new File(tmp.getAbsolutePath() + "/test");
+        boolean dirExists = dir.exists() && dir.isDirectory();
+        assertEquals("createDir creates a directory from string", true, dirCreated);
+        assertEquals("createDir creates a directory from string", true, dirExists);
     }
 }
