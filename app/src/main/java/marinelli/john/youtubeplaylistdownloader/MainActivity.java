@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
         // Get HTML
         try {
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
-            UrlHandler.UrlType urlType = UrlHandler.getUrlType(url);
-            String mediaId = UrlHandler.getMediaId(urlType, url);
+            UrlHandler urlHandler = new UrlHandler();
+            UrlHandler.UrlType urlType = urlHandler.getUrlType(url);
+            String mediaId = urlHandler.getMediaId(urlType, url);
 
             MediaHtmlPageScourer page = null;
 

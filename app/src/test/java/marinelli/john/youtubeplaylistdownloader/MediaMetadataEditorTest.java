@@ -35,6 +35,6 @@ public class MediaMetadataEditorTest {
         MediaModel m = new MediaModel("title", "artist", "mediaId");
         m.setExternalStoragePath(mFile.getAbsolutePath());
         boolean success = MediaMetadataEditor.writeMediaMetadata(m, m.getExternalStoragePath());
-        assertEquals("MediaMetadataEditor successfully writes metadata", false, success);
+        assertEquals("MediaMetadataEditor successfully writes metadata", true, success);
     }
 }

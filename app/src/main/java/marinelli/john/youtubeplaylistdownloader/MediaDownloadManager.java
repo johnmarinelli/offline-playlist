@@ -32,4 +32,6 @@ public class MediaDownloadManager {
     public static MediaModel removeModel(long id) {
         return mMediaModelHashmap.remove(id);
     }
+
+    public static int getNumOfModels() { return mMediaModelHashmap.size(); }
 }

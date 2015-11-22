@@ -22,7 +22,7 @@ public class UrlHandler {
         SOUNDCLOUD_PLAYLIST
     }
 
-    public static UrlType getUrlType(URL url) {
+    public UrlType getUrlType(URL url) {
         String authority = url.getAuthority();
         String path = url.getPath();
 
@@ -36,8 +36,8 @@ public class UrlHandler {
             else if (StringUtilities.regexMatches("playlist", path)) urlType = UrlType.YOUTUBE_PLAYLIST;
         }
 
-        // Handle soundcloud url
-        else if (StringUtilities.regexMatches("youtube.com", authority)) {
+        // TODO: Handle soundcloud url
+        else if (StringUtilities.regexMatches("soundcloud.com", authority)) {
 
         }
 
@@ -46,7 +46,7 @@ public class UrlHandler {
 
     // Every media url will have a unique identifier
     // we need this identifier to be able to manipulate the media
-    public static String getMediaId(UrlType urlType, URL url) {
+    public String getMediaId(UrlType urlType, URL url) {
         String mediaId = "";
 
         // store params into KV pairs

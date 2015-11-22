@@ -99,10 +99,12 @@ public class MediaDataInputActivity extends Activity {
         // After we submit, we need to move the file from downloads,
         // set the metadata,
         // and refresh Android's music library
+        // also remove the media model from downloadmanager
         try {
             moveFromDownloadsToExternalStorage(artist, title);
             setMetadata(artist, title);
             refreshMediaLibrary(artist, title);
+            MediaDownloadManager.removeModel(mDownloadId);
         } catch (MediaDownloaderException e) {
             Toast.makeText(getApplicationContext(),
                     e.getMessage(),
