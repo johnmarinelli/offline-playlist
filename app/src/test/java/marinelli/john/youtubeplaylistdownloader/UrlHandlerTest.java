@@ -1,8 +1,11 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.*;
@@ -14,6 +17,9 @@ public class UrlHandlerTest {
 
     public UrlHandler mUrlHandler;
 
+    @Rule
+    public final ExpectedException mExpectedException = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
         mUrlHandler = new UrlHandler();
@@ -21,8 +27,37 @@ public class UrlHandlerTest {
 
     @Test
     public void testGetUrlTypeForIrrelevantUrl() throws Exception {
-        UrlHandler.UrlType type = mUrlHandler.getUrlType(new URL("http://google.com"));
-        assertEquals("Empty URL string gives None type", UrlHandler.UrlType.NONE, type);
+        mExpectedException.expect(MalformedURLException.class);
+        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.NONE,
+                new URL("http://google.com"));
+    }
+
+    @Test
+    public void testGetUrlTypeForYoutubeUrlWithNoParams() throws Exception {
+        mExpectedException.expect(MalformedURLException.class);
+        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.YOUTUBE_VIDEO,
+                new URL("http://youtube.com"));
+    }
+
+    @Test
+    public void testGetUrlTypeForYoutubeUrlWithNoMediaId() throws Exception {
+        mExpectedException.expect(MalformedURLException.class);
+        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.YOUTUBE_VIDEO,
+                new URL("http://youtube.com?lol=wat"));
+    }
+
+    @Test
+    public void testGetUrlTypeForSoundcloudUrlWithNoPath() throws Exception {
+        mExpectedException.expect(MalformedURLException.class);
+        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.SOUNDCLOUD_SINGLE,
+                new URL("http://soundcloud.com"));
+    }
+
+    @Test
+    public void testGetUrlTypeForSoundcloudUrlWithSingleSoludus() throws Exception {
+        mExpectedException.expect(MalformedURLException.class);
+        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.SOUNDCLOUD_SINGLE,
+                new URL("http://soundcloud.com/"));
     }
 
     @Test
@@ -54,12 +89,6 @@ public class UrlHandlerTest {
     }
 
     @Test
-    public void testGetMediaIdFromUrlWithNoneType() throws Exception {
-        String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.NONE, new URL("http://google.com"));
-        assertEquals("Irrelevant link gives no media Id", -1, mediaId);
-    }
-
-    @Test
     public void testGetMediaIdFromUrlWithYoutubePlaylistType() throws Exception {
         String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.YOUTUBE_PLAYLIST,
                 new URL("https://www.youtube.com/playlist?list=PLVnVsHKss1OUT6tBQLembiZTmhrny8N8E"));
@@ -77,13 +106,13 @@ public class UrlHandlerTest {
     public void testGetMediaIdFromUrlWithSoundcloudSongType() throws Exception {
         String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.SOUNDCLOUD_SINGLE,
                 new URL("https://soundcloud.com/lays-stay-kettle-cooked/future-thought-it-was-a-drought-dirty-sprite-2"));
-        assertEquals("UrlHandler retrieves soundcloud song id", -1, mediaId);
+        assertEquals("UrlHandler retrieves soundcloud song id", "lays-stay-kettle-cooked/future-thought-it-was-a-drought-dirty-sprite-2", mediaId);
     }
 
     @Test
     public void testGetMediaIdFromUrlWithSoundcloudPlaylistType() throws Exception {
         String mediaId = mUrlHandler.getMediaId(UrlHandler.UrlType.SOUNDCLOUD_SINGLE,
                 new URL("https://soundcloud.com/to-pimp-a-butterfly/sets/slime-season-2-young-thug"));
-        assertEquals("UrlHandler retrieves soundcloud playlist id", -1, mediaId);
+        assertEquals("UrlHandler retrieves soundcloud playlist id", "to-pimp-a-butterfly/sets/slime-season-2-young-thug", mediaId);
     }
 }

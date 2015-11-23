@@ -31,6 +31,7 @@ public class YoutubePlaylistSplitter extends MediaHtmlPageScourer {
     @Override
     protected Void doInBackground(Void... params) {
         try {
+            // TODO: refactor into testable modules
             Document doc = Jsoup.connect(Uri.decode(mUrl.toString())).get();
 
             Elements videos = doc.select("tr.pl-video.yt-uix-tile");

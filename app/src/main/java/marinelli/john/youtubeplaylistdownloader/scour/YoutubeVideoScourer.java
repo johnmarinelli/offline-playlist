@@ -30,6 +30,7 @@ public class YoutubeVideoScourer extends MediaHtmlPageScourer {
     @Override
     protected Void doInBackground(Void... params) {
         try {
+            // TODO: refactor into testable modules
             Document doc = Jsoup.connect(Uri.decode(mUrl.toString())).get();
 
             // Get title of video

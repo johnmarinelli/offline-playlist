@@ -50,28 +50,37 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
             URL url = new URL(((EditText) findViewById(R.id.playlist_url)).getText().toString());
             UrlHandler urlHandler = new UrlHandler();
             UrlHandler.UrlType urlType = urlHandler.getUrlType(url);
-            String mediaId = urlHandler.getMediaId(urlType, url);
+            String mediaId = null;
 
-            MediaHtmlPageScourer page = null;
+            // throws MalformedUrlException if there is no media Id
+            mediaId = urlHandler.getMediaId(urlType, url);
+
+            MediaHtmlPageScourer scourer = null;
 
             // We need to use different scouring techniques for each kind of url
             switch (urlType) {
                 case YOUTUBE_VIDEO:
-                    page = new YoutubeVideoScourer(mediaId,
+                    scourer = new YoutubeVideoScourer(mediaId,
                             MainActivity.this,
                             mProgressDialog);
                     break;
 
                 case YOUTUBE_PLAYLIST:
-                    page = new YoutubePlaylistSplitter(mediaId,
+                    scourer = new YoutubePlaylistSplitter(mediaId,
                             MainActivity.this,
                             mProgressDialog);
+                    break;
+                // TODO
+                case SOUNDCLOUD_SINGLE:
+                    break;
+                // TODO
+                case SOUNDCLOUD_PLAYLIST:
                     break;
             }
 
             // Once we're done handling page, this class will call the delegated function
-            page.mDelegate = this;
-            page.execute();
+            scourer.mDelegate = this;
+            scourer.execute();
 
             // Hide the keyboard
             KeyboardUtilities.hideKeyboard(this);
