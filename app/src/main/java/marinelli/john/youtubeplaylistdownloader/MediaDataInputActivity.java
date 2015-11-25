@@ -60,7 +60,6 @@ public class MediaDataInputActivity extends Activity {
         return outputFile;
     }
 
-
     /*
     * Move from downloads to Internal Storage/Music/<ARTIST>
      */

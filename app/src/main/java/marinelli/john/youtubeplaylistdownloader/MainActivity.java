@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import marinelli.john.lib.KeyboardUtilities;
 import marinelli.john.youtubeplaylistdownloader.scour.MediaHtmlPageAsyncResponse;
 import marinelli.john.youtubeplaylistdownloader.scour.MediaHtmlPageScourer;
+import marinelli.john.youtubeplaylistdownloader.scour.SoundcloudPlaylistSplitter;
+import marinelli.john.youtubeplaylistdownloader.scour.SoundcloudSingleScourer;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubePlaylistSplitter;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubeVideoScourer;
 
@@ -70,11 +72,15 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
                             MainActivity.this,
                             mProgressDialog);
                     break;
-                // TODO
                 case SOUNDCLOUD_SINGLE:
+                    scourer = new SoundcloudSingleScourer(mediaId,
+                            MainActivity.this,
+                            mProgressDialog);
                     break;
-                // TODO
                 case SOUNDCLOUD_PLAYLIST:
+                    scourer = new SoundcloudPlaylistSplitter(mediaId,
+                            MainActivity.this,
+                            mProgressDialog);
                     break;
             }
 

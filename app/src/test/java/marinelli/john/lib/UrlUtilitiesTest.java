@@ -14,7 +14,7 @@ public class UrlUtilitiesTest {
     @Test
     public void testEncodeURL() throws Exception {
         URL url = new URL("http://google.com?a=b c d");
-        assertEquals("UrlUtilities::encodeUrl encodes Url.",
+        assertEquals("encodeUrl doesn't encode  Url.",
                 "http://google.com?a=b%20c%20d", UrlUtilities.encodeURL(url).toString());
     }
 }

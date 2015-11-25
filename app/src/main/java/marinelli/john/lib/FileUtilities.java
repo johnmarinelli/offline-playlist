@@ -59,4 +59,16 @@ public class FileUtilities {
         }
         return success;
     }
+
+    public static String getExtension(String name){
+        String ext;
+        if(name.lastIndexOf(".") == -1){
+            ext = "";
+        }
+        else {
+            int index = name.lastIndexOf(".");
+            ext = name.substring(index+1, name.length());
+        }
+        return ext;
+    }
 }

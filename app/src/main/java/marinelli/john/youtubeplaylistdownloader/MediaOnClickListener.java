@@ -23,11 +23,14 @@ public class MediaOnClickListener implements View.OnClickListener {
         // Create the URL we use to parse the html from youtube
         Uri link = Uri.parse(ApiLinks.MP3_DOWNLOAD_SERVICE_LINK.toString())
                 .buildUpon()
-                .appendQueryParameter("f", mMedia.mMediaId)
+                .appendQueryParameter("host", Uri.encode(mMedia.mSource))
+                .appendQueryParameter("path", Uri.encode(mMedia.mPath))
+                .appendQueryParameter("query", Uri.encode(mMedia.mQuery))
                 .build();
 
         // Start the download request
         DownloadManager.Request request = new DownloadManager.Request(link);
+
         long downloadId = mDownloadManager.enqueue(request);
 
         // Store this download id with a media model.

@@ -32,9 +32,9 @@ public class MediaMetadataEditorTest {
 
     @Test
     public void testWriteMediaMetadata() throws Exception {
-        MediaModel m = new MediaModel("title", "artist", "mediaId");
+        MediaModel m = new MediaModel("title", "artist", "source", "path", "query");
         m.setExternalStoragePath(mFile.getAbsolutePath());
         boolean success = MediaMetadataEditor.writeMediaMetadata(m, m.getExternalStoragePath());
-        assertEquals("MediaMetadataEditor successfully writes metadata", true, success);
+        assertEquals("MediaMetadataEditor doesn't write metadata", true, success);
     }
 }

@@ -6,19 +6,34 @@ import android.net.Uri;
  * Class to hold the various links for services/APIs.
  */
 public class ApiLinks {
-    public static Uri YOUTUBE_PLAYLIST_LINK =
+
+    public static Uri YOUTUBE_BASE_LINK =
+            new Uri.Builder()
+                    .scheme("http")
+                    .authority("youtube.com")
+                    .build();
+
+    public static Uri SOUNDCLOUD_BASE_LINK =
+            new Uri.Builder()
+                    .scheme("http")
+                    .authority("soundcloud.com")
+                    .build();
+
+    public static Uri YOUTUBE_PLAYLIST_LINK = Uri.parse(Uri.decode(YOUTUBE_BASE_LINK.toString()))
+            .buildUpon()
+            .path("playlist")
+            .build();
+/*
             new Uri.Builder()
                 .scheme("http")
                 .authority("youtube.com")
                 .path("playlist")
-                .build();
+                .build();*/
 
-    public static Uri YOUTUBE_VIDEO_LINK =
-            new Uri.Builder()
-                    .scheme("http")
-                    .authority("youtube.com")
-                    .path("watch")
-                    .build();
+    public static Uri YOUTUBE_VIDEO_LINK = Uri.parse(Uri.decode(YOUTUBE_BASE_LINK.toString()))
+                .buildUpon()
+                .path("watch")
+                .build();
 
     public static Uri CO_HTML_LINK =
             new Uri.Builder()
@@ -39,7 +54,6 @@ public class ApiLinks {
                 .path(Uri.decode(YOUTUBE_PLAYLIST_LINK.toString()))
                 .build();
 
-    // Remember to use Uri::appendQueryParameter('f', videoId)
     public static Uri MP3_DOWNLOAD_SERVICE_LINK =
             new Uri.Builder()
                 .scheme("https")

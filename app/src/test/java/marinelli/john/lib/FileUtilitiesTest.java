@@ -45,9 +45,9 @@ public class FileUtilitiesTest {
         byte[] buf = new byte[32];
 
         stream.read(buf);
-        String out = new String(buf);
+        String out = new String(buf).trim();
 
-        assertEquals("MoveFile moves files.", "123,456,789,101,121,314", out);
+        assertEquals("MoveFile doesn't move files.", "123,456,789,101,121,314", out);
     }
 
     @Test
@@ -56,7 +56,21 @@ public class FileUtilitiesTest {
         boolean dirCreated = FileUtilities.createDir(tmp.getAbsolutePath() + "/test");
         File dir = new File(tmp.getAbsolutePath() + "/test");
         boolean dirExists = dir.exists() && dir.isDirectory();
-        assertEquals("createDir creates a directory from string", true, dirCreated);
-        assertEquals("createDir creates a directory from string", true, dirExists);
+        assertEquals("createDir doesn't create a directory from string", true, dirCreated);
+        assertEquals("createDir doesn't create a directory from string", true, dirExists);
+    }
+
+    @Test
+    public void testGetMp3Extension() throws Exception {
+        String filename = "a/b/c/d/e/f/g/h.mp3";
+        assertEquals("get extension doesn't get file extension given an mp3", "mp3",
+                FileUtilities.getExtension(filename));
+    }
+
+    @Test
+    public void testGetBlankExtension() throws Exception {
+        String filename = "a/b/c/d/e/f/g/h";
+        assertEquals("get extension doesn't return a blank extension given a file with no extension", "",
+                FileUtilities.getExtension(filename));
     }
 }

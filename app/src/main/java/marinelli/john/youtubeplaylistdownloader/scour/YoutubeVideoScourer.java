@@ -31,7 +31,9 @@ public class YoutubeVideoScourer extends MediaHtmlPageScourer {
     protected Void doInBackground(Void... params) {
         try {
             // TODO: refactor into testable modules
-            Document doc = Jsoup.connect(Uri.decode(mUrl.toString())).get();
+            Document doc = Jsoup.connect(Uri.decode(mUrl.toString()))
+                    .userAgent("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36")
+                    .get();
 
             // Get title of video
             Element titleElement = doc.select("span#eow-title").first();
@@ -45,7 +47,11 @@ public class YoutubeVideoScourer extends MediaHtmlPageScourer {
             String videoId = mUrl.getQueryParameter("v");
 
             // Default youtube media model will set title as video title, artist as video owner
-            mVideos.add(new MediaModel(title, videoOwner, videoId));
+            mVideos.add(new MediaModel(title,
+                    videoOwner,
+                    ApiLinks.YOUTUBE_BASE_LINK.getAuthority(),
+                    ApiLinks.YOUTUBE_VIDEO_LINK.getPath(),
+                    String.format("v=%s", videoId)));
 
         } catch (IOException e) {
             mException = e;

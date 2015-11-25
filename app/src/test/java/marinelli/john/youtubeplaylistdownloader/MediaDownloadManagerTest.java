@@ -11,28 +11,28 @@ import static org.junit.Assert.*;
 public class MediaDownloadManagerTest {
     @Test
     public void testAddModel() throws Exception {
-        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "i"));
-        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "i2"));
-        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "i2"));
+        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "s", "p", "q"));
+        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "s2", "p2", "q2"));
+        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "s2", "p2", "q2"));
 
-        assertEquals("Same Ids will be overwritten", 2, MediaDownloadManager.getNumOfModels());
+        assertEquals("Same Ids won't be overwritten", 2, MediaDownloadManager.getNumOfModels());
     }
 
     @Test
     public void testGetModel() throws Exception {
-        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "i"));
-        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "i2"));
+        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "s", "p", "q"));
+        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "s2", "p2", "q2"));
 
-        assertEquals("MediaDownloadManager gets correct model", "a", MediaDownloadManager.getModel(1).mArtist);
+        assertEquals("MediaDownloadManager doesn't get correct model", "a", MediaDownloadManager.getModel(1).mArtist);
     }
 
     @Test
     public void testRemoveModel() throws Exception {
-        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "i"));
-        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "i2"));
+        MediaDownloadManager.addModel(1, new MediaModel("t", "a", "s", "p", "q"));
+        MediaDownloadManager.addModel(2, new MediaModel("t2", "a2", "s2", "p2", "q2"));
         MediaDownloadManager.removeModel(1);
 
-        assertEquals("MediaDownloadManager removes model", 1, MediaDownloadManager.getNumOfModels());
+        assertEquals("MediaDownloadManager doesn't remove model", 1, MediaDownloadManager.getNumOfModels());
 
 
     }

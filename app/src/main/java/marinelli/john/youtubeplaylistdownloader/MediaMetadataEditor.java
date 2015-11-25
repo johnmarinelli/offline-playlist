@@ -23,7 +23,7 @@ public class MediaMetadataEditor {
         boolean success = false;
         try {
             AudioFile mp3 = AudioFileIO.read(new File(path));
-            Tag tag = mp3.getTag();
+            Tag tag = mp3.getTagOrCreateDefault();
             tag.setField(FieldKey.ARTIST, model.mArtist);
             tag.setField(FieldKey.TITLE, model.mTitle);
             mp3.commit();
