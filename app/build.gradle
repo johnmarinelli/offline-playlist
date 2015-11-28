@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "marinelli.john.youtubeplaylistdownloader"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -29,7 +29,9 @@ dependencies {
     compile project(':volley')
     testCompile 'junit:junit:4.12'
     androidTestCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.+"
+    testCompile 'org.mockito:mockito-core:1.+'
     compile files('libs/jsoup-1.8.3.jar')
     compile files('libs/jaudiotagger-2.2.5.jar')
+    compile files('libs/AndroidBootstrap-2.0.0-sources.jar')
+    compile 'com.beardedhen:androidbootstrap:2.0.0'
 }

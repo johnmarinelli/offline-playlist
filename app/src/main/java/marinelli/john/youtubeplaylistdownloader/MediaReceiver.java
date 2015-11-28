@@ -34,11 +34,13 @@ public class MediaReceiver extends BroadcastReceiver {
                 if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
                     String inputPath = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
                     String ext = FileUtilities.getExtension(inputPath);
+
                     // if downloaded file isn't an mp3
                     if (!ext.equals("mp3")) {
                         Toast.makeText(context,
                                 "There was an error downloading your file.",
                                 Toast.LENGTH_LONG).show();
+                        c.close();
                         return;
                     }
 
@@ -50,7 +52,29 @@ public class MediaReceiver extends BroadcastReceiver {
                     context.startActivity(metadataDialog);
                 }
 
-                // TODO: if download wasn't successful
+                // if download wasn't successful
+                else {
+                    int b = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
+                    String errorMsg = "There was an error downloading the file: ";
+
+                    switch (b) {
+                        case DownloadManager.ERROR_INSUFFICIENT_SPACE:
+                            errorMsg += "There isn't enough space on your external storage.";
+                            break;
+                        case DownloadManager.ERROR_DEVICE_NOT_FOUND:
+                            errorMsg += "External storage not found.";
+                            break;
+                        case DownloadManager.ERROR_CANNOT_RESUME:
+                            errorMsg += "Can't resume download.  Please try again.";
+                            break;
+                        default:
+                            errorMsg += "Unknown.";
+                            break;
+                    }
+
+                    errorMsg += "Code " + Integer.toString(b);
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
+                }
             }
             c.close();
         }

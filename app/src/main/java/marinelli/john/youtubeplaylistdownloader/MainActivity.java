@@ -1,6 +1,7 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -2,19 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical" android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/playlist_url"
         android:hint="Enter youtube playlist URL here"/>
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/fetch_links_button"
-        android:onClick="handleInputUrl"/>
+        android:onClick="handleInputUrl"
+        android:backgroundTint="@color/bootstrap_brand_success"/>
 
     <ListView
         android:id="@+id/video_list"

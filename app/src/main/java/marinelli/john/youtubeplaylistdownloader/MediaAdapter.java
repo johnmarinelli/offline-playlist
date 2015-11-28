@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+
 import java.util.ArrayList;
 
 /**
@@ -40,7 +42,7 @@ public class MediaAdapter extends ArrayAdapter<MediaModel> {
         if (media != null) {
             TextView firstLine = (TextView) v.findViewById(R.id.first_line);
             TextView secondLine = (TextView) v.findViewById(R.id.second_line);
-            Button download = (Button) v.findViewById(R.id.download_button);
+            BootstrapButton download = (BootstrapButton) v.findViewById(R.id.download_button);
 
             firstLine.setText(media.mTitle);
             secondLine.setText(media.mArtist);

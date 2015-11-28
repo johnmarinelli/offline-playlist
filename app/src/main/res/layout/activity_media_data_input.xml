@@ -6,21 +6,23 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Title"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:inputType="textCapWords" />
 
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/artist"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Artist"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:inputType="textCapWords" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/submit_media_data"
         android:layout_width="100dp"
         android:layout_height="30dp"
