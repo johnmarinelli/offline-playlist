@@ -2,20 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical" android:layout_width="fill_parent"
               android:layout_height="fill_parent">
+
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:id="@+id/playlist_url"
-        android:hint="Enter youtube playlist URL here"/>
+        android:hint="Enter Youtube or Soundcloud url here"
+        android:textSize="@dimen/bootstrap_h2_text_size"
+        android:textIsSelectable="false"
+        android:paddingLeft="@dimen/bootstrap_h2_hori_padding"
+        android:paddingTop="@dimen/bootstrap_h1_vert_padding"
+        android:paddingBottom="@dimen/bootstrap_h1_vert_padding"
+        android:paddingRight="@dimen/bootstrap_h2_hori_padding"
+        android:elegantTextHeight="false"/>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="Start"
         android:id="@+id/fetch_links_button"
         android:onClick="handleInputUrl"
-        android:backgroundTint="@color/bootstrap_brand_success"/>
+        android:backgroundTint="@color/bootstrap_brand_success"
+        />
 
     <ListView
         android:id="@+id/video_list"

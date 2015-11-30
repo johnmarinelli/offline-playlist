@@ -23,12 +23,6 @@ public class ApiLinks {
             .buildUpon()
             .path("playlist")
             .build();
-/*
-            new Uri.Builder()
-                .scheme("http")
-                .authority("youtube.com")
-                .path("playlist")
-                .build();*/
 
     public static Uri YOUTUBE_VIDEO_LINK = Uri.parse(Uri.decode(YOUTUBE_BASE_LINK.toString()))
                 .buildUpon()

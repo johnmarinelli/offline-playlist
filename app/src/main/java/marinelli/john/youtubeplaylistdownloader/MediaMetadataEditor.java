@@ -20,34 +20,22 @@ import marinelli.john.youtubeplaylistdownloader.exceptions.MetadataAccessorExcep
  */
 public class MediaMetadataEditor {
     public static boolean writeMediaMetadata(MediaModel model, String path) {
-        boolean success = false;
         try {
             AudioFile mp3 = AudioFileIO.read(new File(path));
             Tag tag = mp3.getTagOrCreateDefault();
             tag.setField(FieldKey.ARTIST, model.mArtist);
             tag.setField(FieldKey.TITLE, model.mTitle);
             mp3.commit();
-            success = true;
-        } catch (CannotReadException e) {
-            e.printStackTrace();
-            throw new MetadataAccessorException(e);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new MetadataAccessorException(e);
-        } catch (TagException e) {
-            e.printStackTrace();
-            throw new MetadataAccessorException(e);
-        } catch (ReadOnlyFileException e) {
-            e.printStackTrace();
-            throw new MetadataAccessorException(e);
-        } catch (InvalidAudioFrameException e) {
-            e.printStackTrace();
-            throw new MetadataAccessorException(e);
-        } catch (CannotWriteException e) {
+        } catch (CannotWriteException
+                |InvalidAudioFrameException
+                |ReadOnlyFileException
+                |TagException
+                |IOException
+                |CannotReadException e) {
             e.printStackTrace();
             throw new MetadataAccessorException(e);
         }
-        return success;
+        return true;
     }
 
 }

@@ -3,7 +3,6 @@ package marinelli.john.youtubeplaylistdownloader;
 import android.app.DownloadManager;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  *  Wrapper for DownloadManager.
@@ -13,7 +12,7 @@ public class MediaDownloadManager {
     private static DownloadManager mDownloadManager = null;
     private static HashMap<Long, MediaModel> mMediaModelHashmap = new HashMap<>();
 
-    public MediaDownloadManager(DownloadManager manager) {
+    public static void setManager(final DownloadManager manager) {
         mDownloadManager = manager;
     }
 

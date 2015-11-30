@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import marinelli.john.youtubeplaylistdownloader.MediaModel;
 
 /**
- * Scours an HTML page for teh infoz.
+ * Scours an HTML page for the info.
  */
 public abstract class MediaHtmlPageScourer extends AsyncTask<Void, Void, Void> {
     Context mContext;
     Uri mUrl;
     ProgressDialog mProgressDialog;
-    ArrayList<MediaModel> mVideos = new ArrayList<MediaModel>();
+    ArrayList<MediaModel> mVideos = new ArrayList<>();
     public MediaHtmlPageAsyncResponse mDelegate = null;
     IOException mException = null;
 

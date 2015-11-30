@@ -1,17 +1,16 @@
 package marinelli.john.youtubeplaylistdownloader;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.IntentFilter;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.app.DownloadManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,19 +24,19 @@ import marinelli.john.youtubeplaylistdownloader.scour.SoundcloudSingleScourer;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubePlaylistSplitter;
 import marinelli.john.youtubeplaylistdownloader.scour.YoutubeVideoScourer;
 
-public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyncResponse {
+public class MainActivity extends Activity implements MediaHtmlPageAsyncResponse {
     private DownloadManager mDownloadManager;
-    private MediaDownloadManager mMediaDownloadManager;
     private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TypefaceProvider.registerDefaultIconSets();
 
         mProgressDialog = new ProgressDialog(this);
         mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        mMediaDownloadManager = new MediaDownloadManager(mDownloadManager);
+        MediaDownloadManager.setManager(mDownloadManager);
 
         // Whenever a download is completed, create a new MediaReceiver().
         getApplicationContext().registerReceiver(new MediaReceiver(), new IntentFilter(
@@ -103,36 +102,26 @@ public class MainActivity extends AppCompatActivity implements MediaHtmlPageAsyn
     * Receive ArrayList of links.
      */
     @Override
-    public void processInputUrlFinish(ArrayList<MediaModel> videos) {
-        // Set listview adapter.
-        ListView mediaList = (ListView) findViewById(R.id.video_list);
-        MediaAdapter mediaAdapter = new MediaAdapter(MainActivity.this,
-                R.layout.video_list_item,
-                videos,
-                mDownloadManager);
-
-        mediaList.setAdapter(mediaAdapter);
+    public void processInputUrlFinish(ArrayList<MediaModel> list) {
+        setMediaList(list);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onStop() {
+        super.onStop();
+        if (mProgressDialog != null) mProgressDialog.dismiss();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private void setMediaList(ArrayList<MediaModel> list) {
+        if (list != null) {
+            // Set listview adapter.
+            ListView mediaList = (ListView) findViewById(R.id.video_list);
+            MediaAdapter mediaAdapter = new MediaAdapter(MainActivity.this,
+                    R.layout.video_list_item,
+                    list,
+                    mDownloadManager);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            mediaList.setAdapter(mediaAdapter);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,13 +1,11 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="?android:attr/listPreferredItemHeight"
-                android:padding="6dip" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/tools"
+              android:layout_width="fill_parent"
+              android:layout_height="?android:attr/listPreferredItemHeight"
+              android:padding="6dip">
 
-    <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
+    <com.beardedhen.androidbootstrap.BootstrapThumbnail
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:src="@drawable/ic_launcher"/>
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@mipmap/music"
+        app:hasBorder="false"
+        />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
+                  android:layout_width="0dp"
+                  android:layout_height="52dp"
+                  android:layout_weight="1.25"
                   android:paddingLeft="16dp"
                   android:paddingRight="16dp"
                   android:orientation="vertical">
@@ -23,28 +25,18 @@
         <com.beardedhen.androidbootstrap.AwesomeTextView
             android:id="@+id/first_line"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
+            android:singleLine="true"
+            android:gravity="left"
             android:ellipsize="marquee"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_toRightOf="@id/icon"
-            android:layout_toEndOf="@id/icon"
-            android:gravity="center_vertical"
-            android:text="Example application"
+            android:text="Example application.  This is a long ass string to test scrolling."
             android:textSize="16sp" />
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
             android:id="@+id/second_line"
-            android:layout_below="@id/first_line"
             android:layout_width="fill_parent"
-            android:layout_height="26dip"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toRightOf="@id/icon"
-            android:layout_toEndOf="@id/icon"
+            android:layout_height="26dp"
+            android:gravity="left"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="Description"
@@ -54,12 +46,15 @@
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Download"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.25"
+        android:text=""
+        bootstrapbutton:fontAwesomeIcon="fa_download"
+        android:textSize="18sp"
         android:id="@+id/download_button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-    />
+        bootstrapbutton:roundedCorners="true"
+        android:alpha="0.8"
+        android:backgroundTint="@color/bootstrap_brand_primary"/>
 
-</RelativeLayout>
+</LinearLayout>

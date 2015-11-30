@@ -1,10 +1,10 @@
 package marinelli.john.youtubeplaylistdownloader;
 
 import android.app.DownloadManager;
-import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.view.View;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
 
 /**
  * Click listener for the 'download' button.
@@ -36,5 +36,9 @@ public class MediaOnClickListener implements View.OnClickListener {
 
         // Store this download id with a media model.
         MediaDownloadManager.addModel(downloadId, mMedia);
+
+        // Change button icon
+        BootstrapButton button = (BootstrapButton) v;
+        button.setFontAwesomeIcon("fa_check");
     }
 }
