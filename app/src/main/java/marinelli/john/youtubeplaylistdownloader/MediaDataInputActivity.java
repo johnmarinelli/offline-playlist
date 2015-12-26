@@ -104,6 +104,9 @@ public class MediaDataInputActivity extends Activity {
             setMetadata(artist, title);
             refreshMediaLibrary(artist, title);
             MediaDownloadManager.removeModel(mDownloadId);
+            Toast.makeText(getApplicationContext(),
+                    title + " by " + artist + " successfully downloaded.",
+                    Toast.LENGTH_LONG).show();
         } catch (MediaDownloaderException e) {
             Toast.makeText(getApplicationContext(),
                     e.getMessage(),
